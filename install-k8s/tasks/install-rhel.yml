@@ -4,15 +4,18 @@
       - docker
       - docker-common
       - docker-engine
+      
     state: absent
+#- name: install rke docker 
+#  shell:
+#    curl https://releases.rancher.com/install-docker/19.03.sh |  sh
+#
+#
 
 
-
-
-
-- name: instalando dependencias - CentOS
+- name: instalando dependencias - RHEL
   yum:
-    name: ['yum-utils', 'device-mapper-persistent-data', 'lvm2']
+    name: ['yum-utils', 'device-mapper-persistent-data', 'lvm2','bash-completion']
     state: present
     update_cache: true
    
@@ -23,19 +26,19 @@
     mode: 0755
 
     
-- name: add repo docker - CentOS
+- name: add repo docker - RHEL
   shell:
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   tags: docker
 
-- name: instalando docker - CentOS
+- name: instalando docker - RHEL
   yum:
     name: docker-ce
     state: present
     update_cache: true  
 
   
-- name: adicionando os parametros de confiugração do docker daemon - CentOS
+- name: adicionando os parametros de confiugração do docker daemon - RHEL
   blockinfile:
     dest: /etc/docker/daemon.json
     marker: ''
@@ -54,12 +57,18 @@
       }
   tags: docker
 
-- name: desabilita SELinux - CentOS
-  command: setenforce 0
-- name: desabilita SELinux on reboot - CentOS
+
+- name: be sure firewalld is stopped
+  systemd: name=firewalld state=stopped
+  ignore_errors: yes
+
+
+#- name: desabilita SELinux - RHEL
+#  command: setenforce 0
+- name: desabilita SELinux on reboot - RHEL
   selinux:
     state: disabled
-- name: add repositorio YUM Kubernetes - CentOS
+- name: add repositorio YUM Kubernetes - RHEL
   yum_repository:
    name: Kubernetes
    description: Kubernetes YUM repository
@@ -71,15 +80,16 @@
     path: /etc/systemd/system/docker.service.d
     state: directory
     mode: 0755
-- name: desativando swap
-  shell:
-    swapoff -a
+- name: Disable swap
+  command:
+    cmd: swapoff -a
 
 - name: Desativando swap no fstab
   replace:
     path: /etc/fstab
     regexp: '^([^#].*?\swap\s+sw\s+.*)$'
     replace: '# \1' 
+
 
 
 - name: start Docker
@@ -121,6 +131,9 @@
 #   enabled: yes
 #   state: started
 
+- name: set docker permission
+  command:
+    usermod -aG docker devops
 
 - name: adicionando autocompletation
   shell:

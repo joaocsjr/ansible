@@ -1,0 +1,42 @@
+---
+# defaults file for kvm-provision
+
+# Variaveis padrao para todos os deploys 
+root_pass: "password"
+file_type: qcow2
+network: default
+ssh-key: devops:file:~/.ssh/id_rsa.pub 
+vm_location: /var/lib/libvirt/images/
+
+
+###########################################ß#
+#
+#  CUSTOMIZACAO DO SETUP
+#
+#############################################
+
+#determina a imagem que sera usada [centos, ubuntu, fedora *beta]
+template_so: "centos"
+dhcp_reservation: "yes"
+utils: "no"
+#gera arquivo de de inventario para o kvm-up
+
+# setup das VMs1
+guests:
+
+  rke1:
+    mem: 4096
+    cpus: 2
+    mac: 81   
+  rke2:
+    mem: 4096
+    cpus: 2
+    mac: 82   
+  rke3:
+    mem: 4096
+    cpus: 2
+    mac: 83   
+
+
+ 
+

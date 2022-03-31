@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo "--------------------------------------------DHCP libvirt-----------------------------------------------"
-sudo virsh net-dhcp-leases --network dados
-echo "-------------Arquivo de conf DHCP-------------------"
-sudo virsh net-dumpxml  dados | grep host\ mac

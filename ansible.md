@@ -1,7 +1,3 @@
-# ansible
-
-
-
 ## Maquina controller
 
 ```bash
@@ -43,5 +39,4 @@ ssh <servername>
 ```bash 
 ansible all -m ping
 ```
-
 

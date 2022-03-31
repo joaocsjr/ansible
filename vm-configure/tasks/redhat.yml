@@ -1,8 +1,8 @@
 
 
-- name: Configure dns
-  shell:
-    echo "nameserver 8.8.8.8" >> /etc/resolv.conf && echo "nameserver 8.8.4.4" >> /etc/resolv.conf 
+#- name: Configure dns
+#  shell:
+#    echo "nameserver 8.8.8.8" >> /etc/resolv.conf && echo "nameserver 8.8.4.4" >> /etc/resolv.conf 
 
 
 
@@ -37,8 +37,8 @@
   shell:
     systemctl stop firewalld && systemctl disable firewalld
   
-##- name: Install docker
-#  shell: curl https://get.docker.com | sh
+#- name: Install docker
+# shell: curl https://get.docker.com | sh
 
 #- name: Modify privilege
 #  become: true
